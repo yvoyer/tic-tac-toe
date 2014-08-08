@@ -32,6 +32,11 @@ class Game
     private $player2;
 
     /**
+     * @var Player
+     */
+    private $previousPlayer;
+
+    /**
      * @param Player $player1
      * @param Player $player2
      * @param Grid   $grid
@@ -56,7 +61,11 @@ class Game
     public function playTurn(Player $player, CellId $cellId)
     {
         $this->guardAgainstWrongPlayer($player);
+        $this->guardAgainstFullGrid();
+        $this->guardAgainstWrongPlayerOrder($player);
+
         $this->grid->play($cellId, $player);
+        $this->previousPlayer = $player;
 
         return $this->grid;
     }
@@ -75,6 +84,28 @@ class Game
     {
         if (!$player->equals($this->player1) && !$player->equals($this->player2)) {
             throw new \InvalidArgumentException('The player is not part of the game.');
+        }
+    }
+
+    private function guardAgainstFullGrid()
+    {
+        if ($this->grid->hasLine()) {
+            throw new \RuntimeException('The game is finished since the grid has a line.');
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @throws \RuntimeException
+     */
+    private function guardAgainstWrongPlayerOrder(Player $player)
+    {
+        if (null === $this->previousPlayer) {
+            return;
+        }
+
+        if ($this->previousPlayer->equals($player)) {
+            throw new \RuntimeException('You already played, it should be the other player turn.');
         }
     }
 }

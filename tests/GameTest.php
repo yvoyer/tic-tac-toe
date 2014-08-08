@@ -56,7 +56,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
 
     public function test_should_return_a_completed_grid()
     {
-        $this->assertPlayerIsPartOfGame();
+        $this->assertPlayerOneIsPartOfGame();
 
         $grid = $this->game->playTurn($this->player1, new CellId('b', 2));
         $this->assertInstanceOf(Grid::CLASS_NAME, $grid);
@@ -94,16 +94,45 @@ class GameTest extends \PHPUnit_Framework_TestCase
     {
         $cellId = new CellId('b', 2);
 
-        $grid = $this->getMock(Grid::CLASS_NAME);
+        $grid = $this->getMockGrid();
         $grid
             ->expects($this->once())
             ->method('play')
             ->with($cellId, $this->player1);
 
         $this->game = new Game($this->player1, $this->player2, $grid);
-        $this->assertPlayerIsPartOfGame();
+        $this->assertPlayerOneIsPartOfGame();
 
         $this->game->playTurn($this->player1, $cellId);
+    }
+
+    /**
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage The game is finished since the grid has a line.
+     */
+    public function test_should_throw_exception_when_a_player_has_a_line()
+    {
+        $grid = $this->getMockGrid();
+        $grid
+            ->expects($this->once())
+            ->method('hasLine')
+            ->will($this->returnValue(true));
+        $this->assertPlayerOneIsPartOfGame();
+
+        $this->game = new Game($this->player1, $this->player2, $grid);
+        $this->game->playTurn($this->player1, $this->getMockCellId());
+    }
+
+    /**
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage You already played, it should be the other player turn.
+     */
+    public function test_should_throw_exception_when_player_are_not_playing_in_the_right_order()
+    {
+        $this->assertPlayerOneIsPartOfGame();
+
+        $this->game->playTurn($this->player1, new CellId('a', 1));
+        $this->game->playTurn($this->player1, new CellId('a', 2));
     }
 
     /**
@@ -122,12 +151,28 @@ class GameTest extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder(Player::CLASS_NAME)->disableOriginalConstructor()->getMock();
     }
 
-    private function assertPlayerIsPartOfGame()
+    private function assertPlayerOneIsPartOfGame()
     {
         $this->player1
             ->expects($this->any())
             ->method('equals')
             ->will($this->returnValue(true));
+    }
+
+    private function assertPlayerTwoIsPartOfGame()
+    {
+        $this->player2
+            ->expects($this->any())
+            ->method('equals')
+            ->will($this->returnValue(true));
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockGrid()
+    {
+        return $this->getMock(Grid::CLASS_NAME);
     }
 }
  

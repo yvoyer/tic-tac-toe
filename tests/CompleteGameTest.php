@@ -32,7 +32,7 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $game->playTurn($player2, new CellId('a', 2));
         $game->playTurn($player1, new CellId('a', 3));
         $game->playTurn($player2, new CellId('b', 1));
-        $game->playTurn($player1, new CellId('b', 2));
+        $game->playTurn($player1, new CellId('c', 3));
         $game->playTurn($player2, new CellId('b', 3));
         $game->playTurn($player1, new CellId('c', 1));
         $game->playTurn($player2, new CellId('c', 2));
@@ -42,8 +42,8 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $expected = <<<Expected
 -------------
 | X | O | X |
-| O | X | O |
-| X | O |   |
+| O |   | O |
+| X | O | X |
 -------------
 
 Expected;
