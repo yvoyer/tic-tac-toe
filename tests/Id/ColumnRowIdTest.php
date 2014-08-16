@@ -5,14 +5,14 @@
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
-namespace Star\TicTacToe;
+namespace Star\TicTacToe\Id;
 
 /**
  * Class CellIdTest
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
- * @package Star\TicTacToe
+ * @package Star\TicTacToe\Id
  */
 class ColumnRowIdTest extends \PHPUnit_Framework_TestCase
 {

@@ -7,6 +7,9 @@
 
 namespace Star\TicTacToe;
 
+use Star\TicTacToe\Grid\Grid;
+use Star\TicTacToe\Id\CellId;
+
 /**
  * Class GameTest
  *
@@ -36,13 +39,25 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     private $player2;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $cellId;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $grid;
+
     public function setUp()
     {
         $this->player1 = $this->getMockPlayer();
         $this->player2 = $this->getMockPlayer();
         $this->display = $this->getMock('Star\TicTacToe\Display\Display');
+        $this->cellId = $this->getMockCellId();
+        $this->grid = $this->getMockGrid();
 
-        $this->game = new Game($this->player1, $this->player2);
+        $this->game = new Game($this->player1, $this->player2, $this->grid);
     }
 
     /**
@@ -57,53 +72,29 @@ class GameTest extends \PHPUnit_Framework_TestCase
     public function test_should_return_a_completed_grid()
     {
         $this->assertPlayerOneIsPartOfGame();
-
-        $grid = $this->game->playTurn($this->player1, new ColumnRowId('b', 2));
-        $this->assertInstanceOf(Grid::CLASS_NAME, $grid);
+        $this->assertInstanceOf(Grid::CLASS_NAME, $this->game->playTurn($this->player1, $this->cellId));
     }
 
-    /**
-     * @dataProvider provideDataToDisplay
-     */
-    public function test_should_render_using_the_display($method)
+    public function test_should_render_using_the_display()
     {
-        $this->display
+        $this->grid
             ->expects($this->once())
-            ->method($method);
+            ->method('render')
+            ->with($this->display);
 
         $this->game->render($this->display);
     }
 
-    public function provideDataToDisplay()
-    {
-        return array(
-            array('setA1'),
-            array('setA2'),
-            array('setA3'),
-            array('setB1'),
-            array('setB2'),
-            array('setB3'),
-            array('setC1'),
-            array('setC2'),
-            array('setC3'),
-            array('render'),
-        );
-    }
-
     public function test_should_play_turn_on_grid()
     {
-        $cellId = new ColumnRowId('b', 2);
-
-        $grid = $this->getMockGrid();
-        $grid
+        $this->grid
             ->expects($this->once())
             ->method('play')
-            ->with($cellId, $this->player1);
+            ->with($this->cellId, $this->player1);
 
-        $this->game = new Game($this->player1, $this->player2, $grid);
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game->playTurn($this->player1, $cellId);
+        $this->game->playTurn($this->player1, $this->cellId);
     }
 
     /**
@@ -112,14 +103,12 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_throw_exception_when_a_player_has_a_line()
     {
-        $grid = $this->getMockGrid();
-        $grid
+        $this->grid
             ->expects($this->once())
             ->method('hasLine')
             ->will($this->returnValue(true));
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game = new Game($this->player1, $this->player2, $grid);
         $this->game->playTurn($this->player1, $this->getMockCellId());
     }
 
@@ -131,15 +120,15 @@ class GameTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game->playTurn($this->player1, new ColumnRowId('a', 1));
-        $this->game->playTurn($this->player1, new ColumnRowId('a', 2));
+        $this->game->playTurn($this->player1, $this->cellId);
+        $this->game->playTurn($this->player1, $this->cellId);
     }
 
     public function test_should_set_player_one_as_first_player()
     {
         $this->assertPlayerOneIsPartOfGame();
         $this->assertNull($this->game->getCurrentPlayer());
-        $this->game->playTurn($this->player1, new ColumnRowId('a', 1));
+        $this->game->playTurn($this->player1, $this->cellId);
         $this->assertSame($this->player1, $this->game->getCurrentPlayer());
     }
 
@@ -156,7 +145,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     private function getMockCellId()
     {
-        return $this->getMockBuilder(ColumnRowId::CLASS_NAME)->disableOriginalConstructor()->getMock();
+        return $this->getMock(CellId::CLASS_NAME);
     }
 
     /**
@@ -170,14 +159,6 @@ class GameTest extends \PHPUnit_Framework_TestCase
     private function assertPlayerOneIsPartOfGame()
     {
         $this->player1
-            ->expects($this->any())
-            ->method('equals')
-            ->will($this->returnValue(true));
-    }
-
-    private function assertPlayerTwoIsPartOfGame()
-    {
-        $this->player2
             ->expects($this->any())
             ->method('equals')
             ->will($this->returnValue(true));

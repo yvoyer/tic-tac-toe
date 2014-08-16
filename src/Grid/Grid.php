@@ -7,7 +7,7 @@
 
 namespace Star\TicTacToe\Grid;
 
-use Star\TicTacToe\CellId;
+use Star\TicTacToe\Id\CellId;
 use Star\TicTacToe\Display\Display;
 use Star\TicTacToe\Player;
 
@@ -20,6 +20,8 @@ use Star\TicTacToe\Player;
  */
 interface Grid
 {
+    const CLASS_NAME = __CLASS__;
+
     /**
      * @param CellId $id
      * @param Player $player

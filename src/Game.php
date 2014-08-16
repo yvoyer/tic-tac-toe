@@ -9,6 +9,7 @@ namespace Star\TicTacToe;
 
 use Star\TicTacToe\Display\Display;
 use Star\TicTacToe\Grid\Grid;
+use Star\TicTacToe\Id\CellId;
 
 /**
  * Class Game
@@ -44,14 +45,10 @@ class Game
      * @param Player $player2
      * @param Grid   $grid
      */
-    public function __construct(Player $player1, Player $player2, Grid $grid = null)
+    public function __construct(Player $player1, Player $player2, Grid $grid)
     {
         $this->player1 = $player1;
         $this->player2 = $player2;
-
-        if (null === $grid) {
-            $grid = new \Star\TicTacToe\Grid();
-        }
         $this->grid = $grid;
     }
 
@@ -73,6 +70,9 @@ class Game
         return $this->grid;
     }
 
+    /**
+     * @param Display $display
+     */
     public function render(Display $display)
     {
         $this->grid->render($display);

@@ -8,6 +8,8 @@
 namespace Star\TicTacToe;
 
 use Star\TicTacToe\Display\ConsoleDisplay;
+use Star\TicTacToe\Grid\ColumnRowGrid;
+use Star\TicTacToe\Id\ColumnRowId;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -26,7 +28,7 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $player1 = new Player('X', 'player 1');
         $player2 = new Player('O', 'player 2');
 
-        $game = new Game($player1, $player2);
+        $game = new Game($player1, $player2, new ColumnRowGrid());
         $game->playTurn($player1, new ColumnRowId('a', 1));
         $game->playTurn($player2, new ColumnRowId('a', 2));
         $game->playTurn($player1, new ColumnRowId('a', 3));

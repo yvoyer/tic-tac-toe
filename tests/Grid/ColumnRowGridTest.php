@@ -5,19 +5,22 @@
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
-namespace Star\TicTacToe;
+namespace Star\TicTacToe\Grid;
+
+use Star\TicTacToe\Id\ColumnRowId;
+use Star\TicTacToe\Player;
 
 /**
- * Class GridTest
+ * Class ColumnRowGridTest
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
- * @package Star\TicTacToe
+ * @package Star\TicTacToe\Grid
  */
-class GridTest extends \PHPUnit_Framework_TestCase
+class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Grid
+     * @var ColumnRowGrid
      */
     private $grid;
 
@@ -30,7 +33,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
     {
         $this->player = $this->getMockPlayer();
 
-        $this->grid = new Grid();
+        $this->grid = new ColumnRowGrid();
     }
 
     public function test_should_put_the_player_token_on_cell()

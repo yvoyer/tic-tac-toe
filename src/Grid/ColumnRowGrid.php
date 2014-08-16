@@ -5,23 +5,22 @@
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
-namespace Star\TicTacToe;
+namespace Star\TicTacToe\Grid;
 
+use Star\TicTacToe\Id\CellId;
+use Star\TicTacToe\Id\ColumnRowId;
 use Star\TicTacToe\Display\Display;
-use Star\TicTacToe\Grid\Grid as BaseGrid;
-use Traversable;
+use Star\TicTacToe\Player;
 
 /**
- * Class Grid
+ * Class ColumnRowGrid
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
- * @package Star\TicTacToe
+ * @package Star\TicTacToe\Grid
  */
-class Grid implements BaseGrid
+class ColumnRowGrid implements Grid
 {
-    const CLASS_NAME = __CLASS__;
-
     private $cells = array(
         'a,1' => '',
         'a,2' => '',
@@ -34,6 +33,12 @@ class Grid implements BaseGrid
         'c,3' => '',
     );
 
+    /**
+     * @param CellId $id
+     * @param Player $player
+     *
+     * @throws \RuntimeException
+     */
     public function play(CellId $id, Player $player)
     {
         if (false === empty($this->cells[$this->getCellIndex($id)])) {
