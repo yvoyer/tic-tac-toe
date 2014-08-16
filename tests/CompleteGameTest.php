@@ -27,14 +27,14 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $player2 = new Player('O', 'player 2');
 
         $game = new Game($player1, $player2);
-        $game->playTurn($player1, new CellId('a', 1));
-        $game->playTurn($player2, new CellId('a', 2));
-        $game->playTurn($player1, new CellId('a', 3));
-        $game->playTurn($player2, new CellId('b', 1));
-        $game->playTurn($player1, new CellId('c', 3));
-        $game->playTurn($player2, new CellId('b', 3));
-        $game->playTurn($player1, new CellId('c', 1));
-        $game->playTurn($player2, new CellId('c', 2));
+        $game->playTurn($player1, new ColumnRowId('a', 1));
+        $game->playTurn($player2, new ColumnRowId('a', 2));
+        $game->playTurn($player1, new ColumnRowId('a', 3));
+        $game->playTurn($player2, new ColumnRowId('b', 1));
+        $game->playTurn($player1, new ColumnRowId('c', 3));
+        $game->playTurn($player2, new ColumnRowId('b', 3));
+        $game->playTurn($player1, new ColumnRowId('c', 1));
+        $game->playTurn($player2, new ColumnRowId('c', 2));
 
         $output = new BufferedOutput();
         $game->render(new ConsoleDisplay($output));

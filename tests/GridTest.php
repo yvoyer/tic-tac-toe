@@ -40,7 +40,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue('X'));
 
-        $this->grid->play(new CellId('a', 1), $this->player);
+        $this->grid->play(new ColumnRowId('a', 1), $this->player);
 
         foreach ($this->grid as $cellId => $cell) {
             if ($cellId == 'a,1') {
@@ -57,7 +57,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_throw_exception_when_not_found_id()
     {
-        $this->grid->play(new CellId('r', 4), $this->player);
+        $this->grid->play(new ColumnRowId('r', 4), $this->player);
     }
 
     /**
@@ -102,9 +102,9 @@ class GridTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('W'));
 
         $this->assertFalse($this->grid->hasLine());
-        $this->grid->play(new CellId('a', $row), $this->player);
-        $this->grid->play(new CellId('b', $row), $this->player);
-        $this->grid->play(new CellId('c', $row), $this->player);
+        $this->grid->play(new ColumnRowId('a', $row), $this->player);
+        $this->grid->play(new ColumnRowId('b', $row), $this->player);
+        $this->grid->play(new ColumnRowId('c', $row), $this->player);
         $this->assertTrue($this->grid->hasLine());
     }
 
@@ -130,9 +130,9 @@ class GridTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('W'));
 
         $this->assertFalse($this->grid->hasLine());
-        $this->grid->play(new CellId($col, 1), $this->player);
-        $this->grid->play(new CellId($col, 2), $this->player);
-        $this->grid->play(new CellId($col, 3), $this->player);
+        $this->grid->play(new ColumnRowId($col, 1), $this->player);
+        $this->grid->play(new ColumnRowId($col, 2), $this->player);
+        $this->grid->play(new ColumnRowId($col, 3), $this->player);
         $this->assertTrue($this->grid->hasLine());
     }
 
@@ -148,11 +148,11 @@ class GridTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideDiagonalData
      *
-     * @param CellId $cell1
-     * @param CellId $cell2
-     * @param CellId $cell3
+     * @param ColumnRowId $cell1
+     * @param ColumnRowId $cell2
+     * @param ColumnRowId $cell3
      */
-    public function test_should_have_a_Diagonal_line(CellId $cell1, CellId $cell2, CellId $cell3)
+    public function test_should_have_a_Diagonal_line(ColumnRowId $cell1, ColumnRowId $cell2, ColumnRowId $cell3)
     {
         $this->player
             ->expects($this->exactly(3))
@@ -169,8 +169,8 @@ class GridTest extends \PHPUnit_Framework_TestCase
     public function provideDiagonalData()
     {
         return array(
-            array(new CellId('a', 1), new CellId('b', 2), new CellId('c', 3)),
-            array(new CellId('a', 3), new CellId('b', 2), new CellId('c', 1)),
+            array(new ColumnRowId('a', 1), new ColumnRowId('b', 2), new ColumnRowId('c', 3)),
+            array(new ColumnRowId('a', 3), new ColumnRowId('b', 2), new ColumnRowId('c', 1)),
         );
     }
 
@@ -185,8 +185,8 @@ class GridTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue('W'));
 
-        $this->grid->play(new CellId('a', 1), $this->player);
-        $this->grid->play(new CellId('a', 1), $this->getMockPlayer());
+        $this->grid->play(new ColumnRowId('a', 1), $this->player);
+        $this->grid->play(new ColumnRowId('a', 1), $this->getMockPlayer());
     }
 
     /**

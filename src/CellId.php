@@ -14,30 +14,11 @@ namespace Star\TicTacToe;
  *
  * @package Star\TicTacToe
  */
-class CellId
+interface CellId
 {
-    const CLASS_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @param string  $column
-     * @param integer $row
-     */
-    public function __construct($column, $row)
-    {
-        $this->value = $column . ',' . $row;
-    }
-
     /**
      * @return string
      */
-    public function __toString()
-    {
-        return strtolower($this->value);
-    }
+    public function getValue();
 }
  

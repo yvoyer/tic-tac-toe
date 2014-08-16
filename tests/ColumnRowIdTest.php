@@ -14,18 +14,18 @@ namespace Star\TicTacToe;
  *
  * @package Star\TicTacToe
  */
-class CellIdTest extends \PHPUnit_Framework_TestCase
+class ColumnRowIdTest extends \PHPUnit_Framework_TestCase
 {
     public function test_should_return_the_cell_id_as_a_string()
     {
-        $id = new CellId('d', 2);
-        $this->assertSame('d,2', (string) $id);
+        $id = new ColumnRowId('d', 2);
+        $this->assertSame('d,2', $id->getValue());
     }
 
     public function test_should_return_the_cell_id_as_a_lower_case_string()
     {
-        $id = new CellId('D', 2);
-        $this->assertSame('d,2', (string) $id);
+        $id = new ColumnRowId('D', 2);
+        $this->assertSame('d,2', $id->getValue());
     }
 }
  

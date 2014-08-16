@@ -7,7 +7,7 @@
 
 namespace Star\TicTacToe\Cli;
 
-use Star\TicTacToe\CellId;
+use Star\TicTacToe\ColumnRowId;
 use Star\TicTacToe\Game;
 use Star\TicTacToe\Player;
 use Star\TicTacToe\Repository\InMemoryRepository;
@@ -72,7 +72,7 @@ class PlayCommand extends Command
             $col = $input->getArgument('column');
             $row = $input->getArgument('row');
 
-            $game->playTurn($player, new CellId($col, $row));
+            $game->playTurn($player, new ColumnRowId($col, $row));
 
             $i ++;
         }

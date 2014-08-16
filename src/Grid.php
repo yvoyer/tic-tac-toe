@@ -47,15 +47,15 @@ class Grid
      */
     public function render(Display $display)
     {
-        $display->setA1($this->get(new CellId('a', 1)));
-        $display->setA2($this->get(new CellId('a', 2)));
-        $display->setA3($this->get(new CellId('a', 3)));
-        $display->setB1($this->get(new CellId('b', 1)));
-        $display->setB2($this->get(new CellId('b', 2)));
-        $display->setB3($this->get(new CellId('b', 3)));
-        $display->setC1($this->get(new CellId('c', 1)));
-        $display->setC2($this->get(new CellId('c', 2)));
-        $display->setC3($this->get(new CellId('c', 3)));
+        $display->setA1($this->get(new ColumnRowId('a', 1)));
+        $display->setA2($this->get(new ColumnRowId('a', 2)));
+        $display->setA3($this->get(new ColumnRowId('a', 3)));
+        $display->setB1($this->get(new ColumnRowId('b', 1)));
+        $display->setB2($this->get(new ColumnRowId('b', 2)));
+        $display->setB3($this->get(new ColumnRowId('b', 3)));
+        $display->setC1($this->get(new ColumnRowId('c', 1)));
+        $display->setC2($this->get(new ColumnRowId('c', 2)));
+        $display->setC3($this->get(new ColumnRowId('c', 3)));
     }
 
     /**
@@ -70,9 +70,9 @@ class Grid
 
     private function hasDiagonalLine()
     {
-        $cell1 = $this->get(new CellId('a', 1));
-        $cell2 = $this->get(new CellId('b', 2));
-        $cell3 = $this->get(new CellId('c', 3));
+        $cell1 = $this->get(new ColumnRowId('a', 1));
+        $cell2 = $this->get(new ColumnRowId('b', 2));
+        $cell3 = $this->get(new ColumnRowId('c', 3));
 
         if (false === empty($cell1) && false === empty($cell2) && false === empty($cell3)) {
             if ($cell1 == $cell2 && $cell2 == $cell3) {
@@ -80,9 +80,9 @@ class Grid
             }
         }
 
-        $cell1 = $this->get(new CellId('a', 3));
-        $cell2 = $this->get(new CellId('b', 2));
-        $cell3 = $this->get(new CellId('c', 1));
+        $cell1 = $this->get(new ColumnRowId('a', 3));
+        $cell2 = $this->get(new ColumnRowId('b', 2));
+        $cell3 = $this->get(new ColumnRowId('c', 1));
         if (false === empty($cell1) && false === empty($cell2) && false === empty($cell3)) {
             if ($cell1 == $cell2 && $cell2 == $cell3) {
                 return true;
@@ -96,9 +96,9 @@ class Grid
     {
         $rows = array(1,2,3);
         foreach ($rows as $row) {
-            $col1 = $this->get(new CellId('a', $row));
-            $col2 = $this->get(new CellId('b', $row));
-            $col3 = $this->get(new CellId('c', $row));
+            $col1 = $this->get(new ColumnRowId('a', $row));
+            $col2 = $this->get(new ColumnRowId('b', $row));
+            $col3 = $this->get(new ColumnRowId('c', $row));
 
             if (false === empty($col1) && false === empty($col2) && false === empty($col3)) {
                 if ($col1 == $col2 && $col2 == $col3) {
@@ -114,9 +114,9 @@ class Grid
     {
         $cols = array('a', 'b', 'c');
         foreach ($cols as $col) {
-            $row1 = $this->get(new CellId($col, 1));
-            $row2 = $this->get(new CellId($col, 2));
-            $row3 = $this->get(new CellId($col, 3));
+            $row1 = $this->get(new ColumnRowId($col, 1));
+            $row2 = $this->get(new ColumnRowId($col, 2));
+            $row3 = $this->get(new ColumnRowId($col, 3));
 
             if (false === empty($row1) && false === empty($row2) && false === empty($row3)) {
                 if ($row1 == $row2 && $row2 == $row3) {
@@ -148,7 +148,7 @@ class Grid
      */
     private function getCellIndex(CellId $id)
     {
-        $index = (string)$id;
+        $index = $id->getValue();
         $this->guardAgainstInvalidCell($index);
         return $index;
     }
