@@ -7,6 +7,8 @@
 
 namespace Star\TicTacToe;
 
+use Star\TicTacToe\Display\Display;
+
 /**
  * Class Game
  *
@@ -34,7 +36,7 @@ class Game
     /**
      * @var Player
      */
-    private $previousPlayer;
+    private $currentPlayer;
 
     /**
      * @param Player $player1
@@ -63,9 +65,9 @@ class Game
         $this->guardAgainstWrongPlayer($player);
         $this->guardAgainstFullGrid();
         $this->guardAgainstWrongPlayerOrder($player);
+        $this->currentPlayer = $player;
 
         $this->grid->play($cellId, $player);
-        $this->previousPlayer = $player;
 
         return $this->grid;
     }
@@ -74,6 +76,14 @@ class Game
     {
         $this->grid->render($display);
         $display->render();
+    }
+
+    /**
+     * @return Player
+     */
+    public function getCurrentPlayer()
+    {
+        return $this->currentPlayer;
     }
 
     /**
@@ -100,12 +110,10 @@ class Game
      */
     private function guardAgainstWrongPlayerOrder(Player $player)
     {
-        if (null === $this->previousPlayer) {
-            return;
-        }
-
-        if ($this->previousPlayer->equals($player)) {
-            throw new \RuntimeException('You already played, it should be the other player turn.');
+        if ($this->currentPlayer) {
+            if ($this->currentPlayer->equals($player)) {
+                throw new \RuntimeException('You already played, it should be the other player turn.');
+            }
         }
     }
 }

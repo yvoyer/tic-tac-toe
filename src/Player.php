@@ -24,11 +24,18 @@ class Player
     private $token;
 
     /**
-     * @param string $token
+     * @var string
      */
-    public function __construct($token)
+    private $name;
+
+    /**
+     * @param string $token
+     * @param string $name
+     */
+    public function __construct($token, $name)
     {
         $this->token = $token;
+        $this->name = $name;
     }
 
     /**
@@ -47,7 +54,16 @@ class Player
     public function equals(Player $player)
     {
         return $this == $player;
+    }
 
+    /**
+     * Returns the Name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
  

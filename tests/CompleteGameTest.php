@@ -23,11 +23,10 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
 {
     public function test_play_a_full_game()
     {
-        $player1 = new Player('X');
-        $player2 = new Player('O');
+        $player1 = new Player('X', 'player 1');
+        $player2 = new Player('O', 'player 2');
 
         $game = new Game($player1, $player2);
-
         $game->playTurn($player1, new CellId('a', 1));
         $game->playTurn($player2, new CellId('a', 2));
         $game->playTurn($player1, new CellId('a', 3));

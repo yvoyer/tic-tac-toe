@@ -65,7 +65,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_fill_in_the_display($method)
     {
-        $display = $this->getMock('Star\TicTacToe\Display');
+        $display = $this->getMock('Star\TicTacToe\Display\Display');
         $display
             ->expects($this->once())
             ->method($method)

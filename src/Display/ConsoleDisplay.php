@@ -7,7 +7,6 @@
 
 namespace Star\TicTacToe\Display;
 
-use Star\TicTacToe\Display;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 

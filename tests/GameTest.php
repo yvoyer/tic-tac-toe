@@ -40,7 +40,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
     {
         $this->player1 = $this->getMockPlayer();
         $this->player2 = $this->getMockPlayer();
-        $this->display = $this->getMock('Star\TicTacToe\Display');
+        $this->display = $this->getMock('Star\TicTacToe\Display\Display');
 
         $this->game = new Game($this->player1, $this->player2);
     }
@@ -135,6 +135,22 @@ class GameTest extends \PHPUnit_Framework_TestCase
         $this->game->playTurn($this->player1, new CellId('a', 2));
     }
 
+    public function test_should_set_player_one_as_first_player()
+    {
+        $this->assertPlayerOneIsPartOfGame();
+        $this->assertNull($this->game->getCurrentPlayer());
+        $this->game->playTurn($this->player1, new CellId('a', 1));
+        $this->assertSame($this->player1, $this->game->getCurrentPlayer());
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockGrid()
+    {
+        return $this->getMock(Grid::CLASS_NAME);
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
@@ -165,14 +181,6 @@ class GameTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('equals')
             ->will($this->returnValue(true));
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getMockGrid()
-    {
-        return $this->getMock(Grid::CLASS_NAME);
     }
 }
  

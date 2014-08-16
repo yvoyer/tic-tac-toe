@@ -23,7 +23,7 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->player = new Player('F');
+        $this->player = new Player('F', 'name');
     }
 
     public function test_should_return_the_token()
@@ -39,6 +39,11 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
     public function test_should_return_true_when_player_is_equals()
     {
         $this->assertTrue($this->player->equals($this->player));
+    }
+
+    public function test_should_have_a_name()
+    {
+        $this->assertSame('name', $this->player->getName());
     }
 }
  

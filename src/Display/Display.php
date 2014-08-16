@@ -5,14 +5,14 @@
  * (c) Yannick Voyer (http://github.com/yvoyer)
  */
 
-namespace Star\TicTacToe;
+namespace Star\TicTacToe\Display;
 
 /**
  * Class Display
  *
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
- * @package Star\TicTacToe
+ * @package Star\TicTacToe\Display
  */
 interface Display
 {

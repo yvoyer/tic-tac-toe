@@ -7,6 +7,7 @@
 
 namespace Star\TicTacToe;
 
+use Star\TicTacToe\Display\Display;
 use Traversable;
 
 /**
