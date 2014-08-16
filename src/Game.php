@@ -8,6 +8,7 @@
 namespace Star\TicTacToe;
 
 use Star\TicTacToe\Display\Display;
+use Star\TicTacToe\Grid\Grid;
 
 /**
  * Class Game
@@ -49,7 +50,7 @@ class Game
         $this->player2 = $player2;
 
         if (null === $grid) {
-            $grid = new Grid();
+            $grid = new \Star\TicTacToe\Grid();
         }
         $this->grid = $grid;
     }

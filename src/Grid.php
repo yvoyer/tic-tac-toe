@@ -8,6 +8,7 @@
 namespace Star\TicTacToe;
 
 use Star\TicTacToe\Display\Display;
+use Star\TicTacToe\Grid\Grid as BaseGrid;
 use Traversable;
 
 /**
@@ -17,7 +18,7 @@ use Traversable;
  *
  * @package Star\TicTacToe
  */
-class Grid
+class Grid implements BaseGrid
 {
     const CLASS_NAME = __CLASS__;
 
