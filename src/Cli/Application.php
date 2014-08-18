@@ -8,6 +8,7 @@
 namespace Star\TicTacToe\Cli;
 
 use Star\TicTacToe\Game;
+use Star\TicTacToe\Grid\ColumnRowGrid;
 use Star\TicTacToe\Player;
 use Star\TicTacToe\Repository\InMemoryRepository;
 use Symfony\Component\Console\Application as BaseApp;
@@ -34,7 +35,7 @@ class Application extends BaseApp
 
         $player1 = new Player('X', 'Player 1');
         $player2 = new Player('O', 'Player 2');
-        $this->repository = new InMemoryRepository(new Game($player1, $player2));
+        $this->repository = new InMemoryRepository(new Game($player1, $player2, new ColumnRowGrid()));
         $this->repository->addPlayer($player1);
         $this->repository->addPlayer($player2);
 

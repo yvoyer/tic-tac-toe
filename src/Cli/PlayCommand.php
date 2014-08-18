@@ -7,7 +7,7 @@
 
 namespace Star\TicTacToe\Cli;
 
-use Star\TicTacToe\ColumnRowId;
+use Star\TicTacToe\Id\ColumnRowId;
 use Star\TicTacToe\Game;
 use Star\TicTacToe\Player;
 use Star\TicTacToe\Repository\InMemoryRepository;
@@ -43,9 +43,9 @@ class PlayCommand extends Command
 
     protected function configure()
     {
-        $this->addArgument('name', InputArgument::REQUIRED, 'The name of the player');
-        $this->addArgument('column', InputArgument::REQUIRED, 'The column to place the token');
-        $this->addArgument('row', InputArgument::REQUIRED, 'The row to place the token');
+//        $this->addArgument('name', InputArgument::REQUIRED, 'The name of the player');
+//        $this->addArgument('column', InputArgument::REQUIRED, 'The column to place the token');
+//        $this->addArgument('row', InputArgument::REQUIRED, 'The row to place the token');
     }
 
     /**
@@ -59,18 +59,18 @@ class PlayCommand extends Command
         $game = $this->repository->getGame();
 
         $i = 0;
-        while ($i < 9) {
+        while (false === $game->isFinished()) {
             /**
              * @var DialogHelper $dialog
              */
             $dialog = $this->getHelper('dialog');
-            $output->writeln('Player X turn.');
+            $output->writeln("Player {$game->getCurrentPlayer()->getName()} turn.");
 
             $dialog->ask($output, 'Position: ');
             $player = $this->repository->findPlayer($input->getArgument('name'));
 
-            $col = $input->getArgument('column');
-            $row = $input->getArgument('row');
+//            $col = $input->getArgument('column');
+//            $row = $input->getArgument('row');
 
             $game->playTurn($player, new ColumnRowId($col, $row));
 

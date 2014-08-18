@@ -88,6 +88,14 @@ class Game
     }
 
     /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return (bool) $this->grid->hasLine();
+    }
+
+    /**
      * @param Player $player
      * @throws \InvalidArgumentException
      */

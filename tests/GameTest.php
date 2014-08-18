@@ -132,6 +132,17 @@ class GameTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->player1, $this->game->getCurrentPlayer());
     }
 
+    public function test_should_return_whether_the_game_is_finished()
+    {
+        $this->assertFalse($this->game->isFinished());
+
+        $this->grid
+            ->expects($this->once())
+            ->method('hasLine')
+            ->will($this->returnValue(true));
+        $this->assertTrue($this->game->isFinished());
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
