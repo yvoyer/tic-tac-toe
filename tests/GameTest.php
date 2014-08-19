@@ -66,13 +66,15 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_throw_exception_when_player_is_not_part_of_game()
     {
-        $this->game->playTurn($this->getMockPlayer(), $this->getMockCellId());
+        $this->assertGameIsStarted();
+        $this->game->playTurn($this->getMockCellId());
     }
 
     public function test_should_return_a_completed_grid()
     {
+        $this->assertGameIsStarted();
         $this->assertPlayerOneIsPartOfGame();
-        $this->assertInstanceOf(Grid::CLASS_NAME, $this->game->playTurn($this->player1, $this->cellId));
+        $this->assertInstanceOf(Grid::CLASS_NAME, $this->game->playTurn($this->cellId));
     }
 
     public function test_should_render_using_the_display()
@@ -87,6 +89,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
 
     public function test_should_play_turn_on_grid()
     {
+        $this->assertGameIsStarted();
         $this->grid
             ->expects($this->once())
             ->method('play')
@@ -94,7 +97,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
 
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game->playTurn($this->player1, $this->cellId);
+        $this->game->playTurn($this->cellId);
     }
 
     /**
@@ -103,32 +106,21 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_throw_exception_when_a_player_has_a_line()
     {
+        $this->assertGameIsStarted();
         $this->grid
             ->expects($this->once())
             ->method('hasLine')
             ->will($this->returnValue(true));
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game->playTurn($this->player1, $this->getMockCellId());
-    }
-
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You already played, it should be the other player turn.
-     */
-    public function test_should_throw_exception_when_player_are_not_playing_in_the_right_order()
-    {
-        $this->assertPlayerOneIsPartOfGame();
-
-        $this->game->playTurn($this->player1, $this->cellId);
-        $this->game->playTurn($this->player1, $this->cellId);
+        $this->game->playTurn($this->getMockCellId());
     }
 
     public function test_should_set_player_one_as_first_player()
     {
-        $this->assertPlayerOneIsPartOfGame();
         $this->assertNull($this->game->getCurrentPlayer());
-        $this->game->playTurn($this->player1, $this->cellId);
+        $this->assertGameIsStarted();
+        $this->assertPlayerOneIsPartOfGame();
         $this->assertSame($this->player1, $this->game->getCurrentPlayer());
     }
 
@@ -141,6 +133,38 @@ class GameTest extends \PHPUnit_Framework_TestCase
             ->method('hasLine')
             ->will($this->returnValue(true));
         $this->assertTrue($this->game->isFinished());
+    }
+
+    public function test_should_switch_player_when_player_played()
+    {
+        $this->player1 = new Player('1', 'p1');
+        $this->player2 = new Player('2', 'p2');
+        $this->game = new Game($this->player1, $this->player2, $this->grid);
+        $this->assertGameIsStarted();
+
+        $this->assertSame($this->player1, $this->game->getCurrentPlayer());
+        $this->game->playTurn($this->cellId);
+        $this->assertSame($this->player2, $this->game->getCurrentPlayer());
+        $this->game->playTurn($this->cellId);
+        $this->assertSame($this->player1, $this->game->getCurrentPlayer());
+        $this->game->playTurn($this->cellId);
+        $this->assertSame($this->player2, $this->game->getCurrentPlayer());
+        $this->game->playTurn($this->cellId);
+        $this->assertSame($this->player1, $this->game->getCurrentPlayer());
+    }
+
+    /**
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage The game is not yet started.
+     */
+    public function test_should_throw_exception_when_the_game_is_not_started()
+    {
+        $this->game->playTurn($this->cellId);
+    }
+
+    public function test_should_return_a_game_result()
+    {
+        $this->assertInstanceOf(GameResult::CLASS_NAME, $this->game->finish());
     }
 
     /**
@@ -173,6 +197,19 @@ class GameTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('equals')
             ->will($this->returnValue(true));
+    }
+
+    private function assertPlayerTwoIsPartOfGame()
+    {
+        $this->player2
+            ->expects($this->any())
+            ->method('equals')
+            ->will($this->returnValue(true));
+    }
+
+    private function assertGameIsStarted()
+    {
+        $this->game->start($this->player1);
     }
 }
  

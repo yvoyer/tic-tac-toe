@@ -29,9 +29,15 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
      */
     private $player;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $display;
+
     public function setUp()
     {
         $this->player = $this->getMockPlayer();
+        $this->display = $this->getMock('Star\TicTacToe\Display\Display');
 
         $this->grid = new ColumnRowGrid();
     }
@@ -68,13 +74,12 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
      */
     public function test_should_fill_in_the_display($method)
     {
-        $display = $this->getMock('Star\TicTacToe\Display\Display');
-        $display
+        $this->display
             ->expects($this->once())
             ->method($method)
             ->with('');
 
-        $this->grid->render($display);
+        $this->grid->render($this->display);
     }
 
     public function provideDataToDisplay()

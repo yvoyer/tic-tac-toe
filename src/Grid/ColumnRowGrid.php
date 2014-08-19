@@ -62,6 +62,7 @@ class ColumnRowGrid implements Grid
         $display->setC1($this->get(new ColumnRowId('c', 1)));
         $display->setC2($this->get(new ColumnRowId('c', 2)));
         $display->setC3($this->get(new ColumnRowId('c', 3)));
+        $display->render();
     }
 
     /**
@@ -168,5 +169,13 @@ class ColumnRowGrid implements Grid
         if (false === array_key_exists($index, $this->cells)) {
             throw new \InvalidArgumentException("The cell id '{$index}' is not found.");
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getWinningToken()
+    {
+        throw new \RuntimeException('Method ' . __METHOD__ . ' not implemented yet.');
     }
 }

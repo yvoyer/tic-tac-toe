@@ -27,7 +27,7 @@ class ConsoleDisplay implements Display
     /**
      * @var array
      */
-    private $cells = array();
+    private $rows = array();
 
     /**
      * @param OutputInterface $output
@@ -41,68 +41,69 @@ class ConsoleDisplay implements Display
         $this->output = $output;
     }
 
+    private function setCellContent($row, $col, $token)
+    {
+        if (empty($token)) {
+            $token = ' ';
+        }
+
+        $this->rows[$row][$col] = $token;
+    }
+
     public function setA1($token)
     {
-        $this->cells[1][1] = $token;
+        $this->setCellContent(1, 1, $token);
     }
 
     public function setA2($token)
     {
-        $this->cells[1][2] = $token;
+        $this->setCellContent(1, 2, $token);
     }
 
     public function setA3($token)
     {
-        $this->cells[1][3] = $token;
+        $this->setCellContent(1, 3, $token);
     }
 
     public function setB1($token)
     {
-        $this->cells[2][1] = $token;
+        $this->setCellContent(2, 1, $token);
     }
 
     public function setB2($token)
     {
-        $this->cells[2][2] = $token;
+        $this->setCellContent(2, 2, $token);
     }
 
     public function setB3($token)
     {
-        $this->cells[2][3] = $token;
+        $this->setCellContent(2, 3, $token);
     }
 
     public function setC1($token)
     {
-        $this->cells[3][1] = $token;
+        $this->setCellContent(3, 1, $token);
     }
 
     public function setC2($token)
     {
-        $this->cells[3][2] = $token;
+        $this->setCellContent(3, 2, $token);
     }
 
     public function setC3($token)
     {
-        $this->cells[3][3] = $token;
+        $this->setCellContent(3, 3, $token);
     }
 
     public function render()
     {
-        $this->output->writeln('-------------');
-
-        foreach ($this->cells as $row => $cols) {
-            $strRow = '|';
-            foreach ($cols as $col => $token) {
-                if (empty($token)) {
-                    $token = ' ';
-                }
-                $strRow .= ' ' . $token . ' |';
+        foreach ($this->rows as $lineNumber => $cols) {
+            $row = " %s | %s | %s";
+            $this->output->writeln(sprintf($row, $cols[1], $cols[2], $cols[3]));
+            if ($lineNumber != 3) {
+                $this->output->writeln('-----------');
             }
-
-            $this->output->writeln($strRow);
         }
-
-        $this->output->writeln('-------------');
     }
 }
  

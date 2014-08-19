@@ -29,23 +29,24 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $player2 = new Player('O', 'player 2');
 
         $game = new Game($player1, $player2, new ColumnRowGrid());
-        $game->playTurn($player1, new ColumnRowId('a', 1));
-        $game->playTurn($player2, new ColumnRowId('a', 2));
-        $game->playTurn($player1, new ColumnRowId('a', 3));
-        $game->playTurn($player2, new ColumnRowId('b', 1));
-        $game->playTurn($player1, new ColumnRowId('c', 3));
-        $game->playTurn($player2, new ColumnRowId('b', 3));
-        $game->playTurn($player1, new ColumnRowId('c', 1));
-        $game->playTurn($player2, new ColumnRowId('c', 2));
+        $game->start($player1);
+        $game->playTurn(new ColumnRowId('a', 1));
+        $game->playTurn(new ColumnRowId('a', 2));
+        $game->playTurn(new ColumnRowId('a', 3));
+        $game->playTurn(new ColumnRowId('b', 1));
+        $game->playTurn(new ColumnRowId('c', 3));
+        $game->playTurn(new ColumnRowId('b', 3));
+        $game->playTurn(new ColumnRowId('c', 1));
+        $game->playTurn(new ColumnRowId('c', 2));
 
         $output = new BufferedOutput();
         $game->render(new ConsoleDisplay($output));
         $expected = <<<Expected
--------------
-| X | O | X |
-| O |   | O |
-| X | O | X |
--------------
+ X | O | X
+-----------
+ O |   | O
+-----------
+ X | O | X
 
 Expected;
         $this->assertEquals($expected, $output->fetch());

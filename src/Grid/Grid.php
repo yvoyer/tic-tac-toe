@@ -34,10 +34,15 @@ interface Grid
     public function render(Display $display);
 
     /**
-     * Returns whether an horizontal line is filled with the same token.
+     * Returns whether an horizontal/vertical/diagonal line is filled with the same token.
      *
      * @return bool
      */
     public function hasLine();
+
+    /**
+     * @return string
+     */
+    public function getWinningToken();
 }
  

@@ -20,6 +20,8 @@ use Star\TicTacToe\Id\CellId;
  */
 class Game
 {
+    const CLASS_NAME = __CLASS__;
+
     /**
      * @var Grid
      */
@@ -52,22 +54,42 @@ class Game
         $this->grid = $grid;
     }
 
+    public function start(Player $startPlayer)
+    {
+        $this->currentPlayer = $startPlayer;
+    }
+
+    private function isStarted()
+    {
+        return null !== $this->currentPlayer;
+    }
+
     /**
-     * @param Player $player
      * @param CellId $cellId
      *
      * @return Grid
      */
-    public function playTurn(Player $player, CellId $cellId)
+    public function playTurn(CellId $cellId)
     {
-        $this->guardAgainstWrongPlayer($player);
+        if (false === $this->isStarted()) {
+            throw new \RuntimeException('The game is not yet started.');
+        }
+        $this->guardAgainstWrongPlayer($this->currentPlayer);
         $this->guardAgainstFullGrid();
-        $this->guardAgainstWrongPlayerOrder($player);
-        $this->currentPlayer = $player;
-
-        $this->grid->play($cellId, $player);
+        $this->guardAgainstWrongPlayerOrder($this->currentPlayer);
+        $this->grid->play($cellId, $this->currentPlayer);
+        $this->endTurn();
 
         return $this->grid;
+    }
+
+    private function endTurn()
+    {
+        if ($this->currentPlayer->equals($this->player1)) {
+            $this->currentPlayer = $this->player2;
+        } else {
+            $this->currentPlayer = $this->player1;
+        }
     }
 
     /**
@@ -76,7 +98,6 @@ class Game
     public function render(Display $display)
     {
         $this->grid->render($display);
-        $display->render();
     }
 
     /**
@@ -93,6 +114,14 @@ class Game
     public function isFinished()
     {
         return (bool) $this->grid->hasLine();
+    }
+
+    /**
+     * @return GameResult
+     */
+    public function finish()
+    {
+        return new GameResult($this->grid, $this->player1, $this->player2);
     }
 
     /**
@@ -119,11 +148,11 @@ class Game
      */
     private function guardAgainstWrongPlayerOrder(Player $player)
     {
-        if ($this->currentPlayer) {
-            if ($this->currentPlayer->equals($player)) {
-                throw new \RuntimeException('You already played, it should be the other player turn.');
-            }
-        }
+//        if ($this->currentPlayer) {
+//            if ($this->currentPlayer->equals($player)) {
+//                throw new \RuntimeException('You already played, it should be the other player turn.');
+//            }
+//        }
     }
 }
  
