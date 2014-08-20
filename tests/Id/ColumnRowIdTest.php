@@ -13,6 +13,8 @@ namespace Star\TicTacToe\Id;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe\Id
+ *
+ * @covers Star\TicTacToe\Id\ColumnRowId
  */
 class ColumnRowIdTest extends \PHPUnit_Framework_TestCase
 {

@@ -21,6 +21,11 @@ use Star\TicTacToe\Player;
  */
 class ColumnRowGrid implements Grid
 {
+    /**
+     * @var string
+     */
+    private $winningToken;
+
     private $cells = array(
         'a,1' => '',
         'a,2' => '',
@@ -45,7 +50,12 @@ class ColumnRowGrid implements Grid
             throw new \RuntimeException('The cell already has a token.');
         }
 
-        $this->cells[$this->getCellIndex($id)] = $player->getToken();
+        $token = $player->getToken();
+        $this->cells[$this->getCellIndex($id)] = $token;
+
+        if ($this->hasLine()) {
+            $this->winningToken = $token;
+        }
     }
 
     /**
@@ -73,6 +83,14 @@ class ColumnRowGrid implements Grid
     public function hasLine()
     {
         return $this->hasHorizontalLine() || $this->hasVerticalLine() || $this->hasDiagonalLine();
+    }
+
+    /**
+     * @return string
+     */
+    public function getWinningToken()
+    {
+        return $this->winningToken;
     }
 
     private function hasDiagonalLine()
@@ -169,13 +187,5 @@ class ColumnRowGrid implements Grid
         if (false === array_key_exists($index, $this->cells)) {
             throw new \InvalidArgumentException("The cell id '{$index}' is not found.");
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getWinningToken()
-    {
-        throw new \RuntimeException('Method ' . __METHOD__ . ' not implemented yet.');
     }
 }

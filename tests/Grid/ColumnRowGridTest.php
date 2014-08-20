@@ -16,6 +16,9 @@ use Star\TicTacToe\Player;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe\Grid
+ *
+ * @covers Star\TicTacToe\Grid\ColumnRowGrid
+ * @uses Star\TicTacToe\Id\ColumnRowId
  */
 class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
 {
@@ -160,7 +163,7 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
      * @param ColumnRowId $cell2
      * @param ColumnRowId $cell3
      */
-    public function test_should_have_a_Diagonal_line(ColumnRowId $cell1, ColumnRowId $cell2, ColumnRowId $cell3)
+    public function test_should_have_a_diagonal_line(ColumnRowId $cell1, ColumnRowId $cell2, ColumnRowId $cell3)
     {
         $this->player
             ->expects($this->exactly(3))
@@ -195,6 +198,36 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
 
         $this->grid->play(new ColumnRowId('a', 1), $this->player);
         $this->grid->play(new ColumnRowId('a', 1), $this->getMockPlayer());
+    }
+
+    /**
+     * @dataProvider provideWinningCellsPosition
+     */
+    public function test_should_return_the_winning_token($cell1, $cell2, $cell3)
+    {
+        $this->player
+            ->expects($this->exactly(3))
+            ->method('getToken')
+            ->will($this->returnValue('W'));
+
+        $this->grid->play($cell1, $this->player);
+        $this->grid->play($cell2, $this->player);
+        $this->grid->play($cell3, $this->player);
+        $this->assertSame('W', $this->grid->getWinningToken());
+    }
+
+    public function provideWinningCellsPosition()
+    {
+        return array(
+            'Horizontal line 1' => array(new ColumnRowId('a', 1), new ColumnRowId('b', 1), new ColumnRowId('c', 1)),
+            'Horizontal line 2' => array(new ColumnRowId('a', 2), new ColumnRowId('b', 2), new ColumnRowId('c', 2)),
+            'Horizontal line 3' => array(new ColumnRowId('a', 3), new ColumnRowId('b', 3), new ColumnRowId('c', 3)),
+            'Vertical line 1' => array(new ColumnRowId('a', 1), new ColumnRowId('a', 2), new ColumnRowId('a', 3)),
+            'Vertical line 2' => array(new ColumnRowId('b', 1), new ColumnRowId('b', 2), new ColumnRowId('b', 3)),
+            'Vertical line 3' => array(new ColumnRowId('c', 1), new ColumnRowId('c', 2), new ColumnRowId('c', 3)),
+            'Diagonal line 1' => array(new ColumnRowId('a', 1), new ColumnRowId('b', 2), new ColumnRowId('c', 3)),
+            'Diagonal line 2' => array(new ColumnRowId('c', 1), new ColumnRowId('b', 2), new ColumnRowId('a', 3)),
+        );
     }
 
     /**

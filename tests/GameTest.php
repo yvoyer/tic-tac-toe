@@ -16,6 +16,10 @@ use Star\TicTacToe\Id\CellId;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe
+ *
+ * @covers Star\TicTacToe\Game
+ * @uses Star\TicTacToe\Player
+ * @uses Star\TicTacToe\GameResult
  */
 class GameTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,13 +72,6 @@ class GameTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertGameIsStarted();
         $this->game->playTurn($this->getMockCellId());
-    }
-
-    public function test_should_return_a_completed_grid()
-    {
-        $this->assertGameIsStarted();
-        $this->assertPlayerOneIsPartOfGame();
-        $this->assertInstanceOf(Grid::CLASS_NAME, $this->game->playTurn($this->cellId));
     }
 
     public function test_should_render_using_the_display()

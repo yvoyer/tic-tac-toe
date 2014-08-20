@@ -12,7 +12,6 @@ use Star\TicTacToe\Grid\ColumnRowGrid;
 use Star\TicTacToe\Id\ColumnRowId;
 use Star\TicTacToe\Game;
 use Star\TicTacToe\Player;
-use Star\TicTacToe\Repository\InMemoryRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,18 +27,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PlayCommand extends Command
 {
-    /**
-     * @var InMemoryRepository
-     */
-    private $repository;
-
-    /**
-     * @param InMemoryRepository $repository
-     */
-    public function __construct(InMemoryRepository $repository)
+    public function __construct()
     {
-        $this->repository = $repository;
-
         parent::__construct('play');
     }
 
@@ -67,15 +56,12 @@ class PlayCommand extends Command
         $player2 = new Player('O', $player2Name);
 
         $game = new Game($player1, $player2, new ColumnRowGrid());
-
-        $i = 0;
         $game->start($player1);
+
         while (false === $game->isFinished()) {
             $currentPlayer = $game->getCurrentPlayer();
-            $output->writeln("{$currentPlayer->getName()}, c'est votre tour.");
-            $display = new ConsoleDisplay($output);
-
-            $game->render($display);
+            $output->writeln("<question>{$currentPlayer->getName()}, c'est votre tour.</question>");
+            $game->render(new ConsoleDisplay($output));
 
             $position = $dialog->askAndValidate($output, 'Position: ', function($string) {
                     if (! preg_match('/([abc)(,)([123])/', $string)) {
@@ -92,20 +78,20 @@ class PlayCommand extends Command
             try {
                 $game->playTurn(new ColumnRowId($col, $row));
             } catch (\Exception $e) {
-                $output->writeln('<error>' . $e->getMessage() . '</error>');
+                $output->writeln("<error>{$e->getMessage()}</error>");
             }
-
-            $i ++;
         }
 
         $result = $game->finish();
         if ($result->isWin()) {
-            $output->writeln('Game is won by: ' . $result->getWinner()->getName());
+            $output->writeln("<info>Game is won by: {$result->getWinner()->getName()}</info>");
         }
 
         if ($result->isDraw()) {
-            $output->writeln('Game is a tie');
+            $output->writeln('<notice>Game is a tie</notice>');
         }
+
+        $game->render(new ConsoleDisplay($output));
     }
 }
  

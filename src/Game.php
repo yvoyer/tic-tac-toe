@@ -66,21 +66,14 @@ class Game
 
     /**
      * @param CellId $cellId
-     *
-     * @return Grid
      */
     public function playTurn(CellId $cellId)
     {
-        if (false === $this->isStarted()) {
-            throw new \RuntimeException('The game is not yet started.');
-        }
+        $this->guardAgainstNotStartedGame();
         $this->guardAgainstWrongPlayer($this->currentPlayer);
         $this->guardAgainstFullGrid();
-        $this->guardAgainstWrongPlayerOrder($this->currentPlayer);
         $this->grid->play($cellId, $this->currentPlayer);
         $this->endTurn();
-
-        return $this->grid;
     }
 
     private function endTurn()
@@ -142,17 +135,11 @@ class Game
         }
     }
 
-    /**
-     * @param Player $player
-     * @throws \RuntimeException
-     */
-    private function guardAgainstWrongPlayerOrder(Player $player)
+    private function guardAgainstNotStartedGame()
     {
-//        if ($this->currentPlayer) {
-//            if ($this->currentPlayer->equals($player)) {
-//                throw new \RuntimeException('You already played, it should be the other player turn.');
-//            }
-//        }
+        if (false === $this->isStarted()) {
+            throw new \RuntimeException('The game is not yet started.');
+        }
     }
 }
  

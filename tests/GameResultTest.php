@@ -15,6 +15,8 @@ use Star\TicTacToe\Grid\Grid;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe
+ *
+ * @covers Star\TicTacToe\GameResult
  */
 class GameResultTest extends \PHPUnit_Framework_TestCase
 {
@@ -92,6 +94,20 @@ class GameResultTest extends \PHPUnit_Framework_TestCase
             ->willReturn('O');
 
         $this->assertSame($this->player2, $this->result->getWinner());
+    }
+
+    public function test_should_return_no_winner()
+    {
+        $this->player1
+            ->expects($this->once())
+            ->method('getToken')
+            ->willReturn('X');
+        $this->player2
+            ->expects($this->once())
+            ->method('getToken')
+            ->willReturn('O');
+
+        $this->assertNull($this->result->getWinner());
     }
 }
  

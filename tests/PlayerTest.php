@@ -13,6 +13,8 @@ namespace Star\TicTacToe;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe
+ *
+ * @covers Star\TicTacToe\Player
  */
 class PlayerTest extends \PHPUnit_Framework_TestCase
 {
