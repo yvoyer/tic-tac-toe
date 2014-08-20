@@ -9,7 +9,6 @@ namespace Star\TicTacToe\Cli;
 
 use Star\TicTacToe\Display\ConsoleDisplay;
 use Star\TicTacToe\Grid\ColumnRowGrid;
-use Star\TicTacToe\Id\ColumnRowId;
 use Star\TicTacToe\Game;
 use Star\TicTacToe\Player;
 use Symfony\Component\Console\Command\Command;

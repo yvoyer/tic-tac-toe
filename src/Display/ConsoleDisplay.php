@@ -50,47 +50,47 @@ class ConsoleDisplay implements Display
         $this->rows[$row][$col] = $token;
     }
 
-    public function setA1($token)
+    public function setNorthWestCell($token)
     {
         $this->setCellContent(1, 1, $token);
     }
 
-    public function setA2($token)
+    public function setWestCell($token)
     {
         $this->setCellContent(1, 2, $token);
     }
 
-    public function setA3($token)
+    public function setSouthWestCell($token)
     {
         $this->setCellContent(1, 3, $token);
     }
 
-    public function setB1($token)
+    public function setNorthCell($token)
     {
         $this->setCellContent(2, 1, $token);
     }
 
-    public function setB2($token)
+    public function setCenterCell($token)
     {
         $this->setCellContent(2, 2, $token);
     }
 
-    public function setB3($token)
+    public function setSouthCell($token)
     {
         $this->setCellContent(2, 3, $token);
     }
 
-    public function setC1($token)
+    public function setNorthEastCell($token)
     {
         $this->setCellContent(3, 1, $token);
     }
 
-    public function setC2($token)
+    public function setEastCell($token)
     {
         $this->setCellContent(3, 2, $token);
     }
 
-    public function setC3($token)
+    public function setSouthEastCell($token)
     {
         $this->setCellContent(3, 3, $token);
     }

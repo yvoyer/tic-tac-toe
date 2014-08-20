@@ -9,7 +9,6 @@ namespace Star\TicTacToe;
 
 use Star\TicTacToe\Display\ConsoleDisplay;
 use Star\TicTacToe\Grid\ColumnRowGrid;
-use Star\TicTacToe\Id\ColumnRowId;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -28,16 +27,17 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $player1 = new Player('X', 'player 1');
         $player2 = new Player('O', 'player 2');
 
-        $game = new Game($player1, $player2, new ColumnRowGrid());
+        $grid = new ColumnRowGrid();
+        $game = new Game($player1, $player2, $grid);
         $game->start($player1);
-        $game->playTurn(new ColumnRowId('a', 1));
-        $game->playTurn(new ColumnRowId('a', 2));
-        $game->playTurn(new ColumnRowId('a', 3));
-        $game->playTurn(new ColumnRowId('b', 1));
-        $game->playTurn(new ColumnRowId('c', 3));
-        $game->playTurn(new ColumnRowId('b', 3));
-        $game->playTurn(new ColumnRowId('c', 1));
-        $game->playTurn(new ColumnRowId('c', 2));
+        $game->playTurn($grid->createId('a,1'));
+        $game->playTurn($grid->createId('a,2'));
+        $game->playTurn($grid->createId('a,3'));
+        $game->playTurn($grid->createId('b,1'));
+        $game->playTurn($grid->createId('c,3'));
+        $game->playTurn($grid->createId('b,3'));
+        $game->playTurn($grid->createId('c,1'));
+        $game->playTurn($grid->createId('c,2'));
 
         $output = new BufferedOutput();
         $game->render(new ConsoleDisplay($output));

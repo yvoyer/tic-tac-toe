@@ -63,15 +63,15 @@ class ColumnRowGrid implements Grid
      */
     public function render(Display $display)
     {
-        $display->setA1($this->get(new ColumnRowId('a', 1)));
-        $display->setA2($this->get(new ColumnRowId('a', 2)));
-        $display->setA3($this->get(new ColumnRowId('a', 3)));
-        $display->setB1($this->get(new ColumnRowId('b', 1)));
-        $display->setB2($this->get(new ColumnRowId('b', 2)));
-        $display->setB3($this->get(new ColumnRowId('b', 3)));
-        $display->setC1($this->get(new ColumnRowId('c', 1)));
-        $display->setC2($this->get(new ColumnRowId('c', 2)));
-        $display->setC3($this->get(new ColumnRowId('c', 3)));
+        $display->setNorthWestCell($this->get(new ColumnRowId('a', 1)));
+        $display->setWestCell($this->get(new ColumnRowId('a', 2)));
+        $display->setSouthWestCell($this->get(new ColumnRowId('a', 3)));
+        $display->setNorthCell($this->get(new ColumnRowId('b', 1)));
+        $display->setCenterCell($this->get(new ColumnRowId('b', 2)));
+        $display->setSouthCell($this->get(new ColumnRowId('b', 3)));
+        $display->setNorthEastCell($this->get(new ColumnRowId('c', 1)));
+        $display->setEastCell($this->get(new ColumnRowId('c', 2)));
+        $display->setSouthEastCell($this->get(new ColumnRowId('c', 3)));
         $display->render();
     }
 

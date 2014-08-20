@@ -88,15 +88,15 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
     public function provideDataToDisplay()
     {
         return array(
-            array('setA1'),
-            array('setA2'),
-            array('setA3'),
-            array('setB1'),
-            array('setB2'),
-            array('setB3'),
-            array('setC1'),
-            array('setC2'),
-            array('setC3'),
+            array('setNorthWestCell'),
+            array('setWestCell'),
+            array('setSouthWestCell'),
+            array('setNorthCell'),
+            array('setCenterCell'),
+            array('setSouthCell'),
+            array('setNorthEastCell'),
+            array('setEastCell'),
+            array('setSouthEastCell'),
         );
     }
 
@@ -154,6 +154,32 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
             array('b'),
             array('c'),
         );
+    }
+
+    public function test_should_not_have_any_line()
+    {
+        $player1 = $this->getMockPlayer();
+        $player1
+            ->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue('C'));
+
+        $player2 = $this->getMockPlayer();
+        $player2
+            ->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue('E'));
+
+        $this->grid->play(new ColumnRowId('a', 1), $player1);
+        $this->grid->play(new ColumnRowId('c', 1), $player1);
+        $this->grid->play(new ColumnRowId('b', 2), $player1);
+        $this->grid->play(new ColumnRowId('b', 3), $player1);
+        $this->grid->play(new ColumnRowId('b', 1), $player2);
+        $this->grid->play(new ColumnRowId('a', 2), $player2);
+        $this->grid->play(new ColumnRowId('c', 2), $player2);
+        $this->grid->play(new ColumnRowId('a', 3), $player2);
+        $this->grid->play(new ColumnRowId('c', 3), $player2);
+        $this->assertFalse($this->grid->hasLine());
     }
 
     /**

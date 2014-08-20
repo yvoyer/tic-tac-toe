@@ -16,15 +16,15 @@ namespace Star\TicTacToe\Display;
  */
 interface Display
 {
-    public function setA1($token);
-    public function setA2($token);
-    public function setA3($token);
-    public function setB1($token);
-    public function setB2($token);
-    public function setB3($token);
-    public function setC1($token);
-    public function setC2($token);
-    public function setC3($token);
+    public function setNorthWestCell($token);
+    public function setWestCell($token);
+    public function setSouthWestCell($token);
+    public function setNorthCell($token);
+    public function setCenterCell($token);
+    public function setSouthCell($token);
+    public function setNorthEastCell($token);
+    public function setEastCell($token);
+    public function setSouthEastCell($token);
     public function render();
 }
  
