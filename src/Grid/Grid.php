@@ -44,5 +44,12 @@ interface Grid
      * @return string
      */
     public function getWinningToken();
+
+    /**
+     * @param string $string
+     *
+     * @return CellId
+     */
+    public function createId($string);
 }
  

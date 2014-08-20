@@ -55,7 +55,8 @@ class PlayCommand extends Command
         $player2Name = $dialog->ask($output, 'Entrez le nom du joueur 2: ');
         $player2 = new Player('O', $player2Name);
 
-        $game = new Game($player1, $player2, new ColumnRowGrid());
+        $grid = new ColumnRowGrid();
+        $game = new Game($player1, $player2, $grid);
         $game->start($player1);
 
         while (false === $game->isFinished()) {
@@ -63,20 +64,13 @@ class PlayCommand extends Command
             $output->writeln("<question>{$currentPlayer->getName()}, c'est votre tour.</question>");
             $game->render(new ConsoleDisplay($output));
 
-            $position = $dialog->askAndValidate($output, 'Position: ', function($string) {
-                    if (! preg_match('/([abc)(,)([123])/', $string)) {
-                        throw new \InvalidArgumentException('The position must be in format X,Y');
-                    }
-
-                    return $string;
+            $id = $dialog->askAndValidate($output, 'Position: ', function($string) use ($grid) {
+                    return $grid->createId($string);
                 }
             );
-            $aPos = explode(',', $position);
-            $col = $aPos[0];
-            $row = $aPos[1];
 
             try {
-                $game->playTurn(new ColumnRowId($col, $row));
+                $game->playTurn($id);
             } catch (\Exception $e) {
                 $output->writeln("<error>{$e->getMessage()}</error>");
             }

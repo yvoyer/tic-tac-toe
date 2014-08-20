@@ -93,6 +93,22 @@ class ColumnRowGrid implements Grid
         return $this->winningToken;
     }
 
+    /**
+     * @param string $string
+     *
+     * @throws \InvalidArgumentException
+     * @return CellId
+     */
+    public function createId($string)
+    {
+        if (! preg_match('/([abc]),([123])/', $string)) {
+            throw new \InvalidArgumentException('The id must be of format X,Y.');
+        }
+        $aStr = explode(',', $string);
+
+        return new ColumnRowId($aStr[0], $aStr[1]);
+    }
+
     private function hasDiagonalLine()
     {
         $cell1 = $this->get(new ColumnRowId('a', 1));

@@ -230,6 +230,35 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function test_should_create_the_id()
+    {
+        $this->assertInstanceOf(ColumnRowId::CLASS_NAME, $this->grid->createId('a,1'));
+    }
+
+    /**
+     * @param $string
+     *
+     * @dataProvider provideInvalidId
+     *
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage The id must be of format X,Y.
+     */
+    public function test_should_throw_exception_when_invalid_arguments_given($string)
+    {
+        $this->grid->createId($string);
+    }
+
+    public function provideInvalidId()
+    {
+        return array(
+            array('1,2'),
+            array('1'),
+            array('a'),
+            array('f,2'),
+            array('wqed'),
+        );
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
