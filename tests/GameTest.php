@@ -110,7 +110,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->assertPlayerOneIsPartOfGame();
 
-        $this->game->playTurn($this->getMockCellId());
+        $this->assertInstanceOf(Result::INTERFACE_NAME, $this->game->playTurn($this->getMockCellId()));
     }
 
     public function test_should_set_player_one_as_first_player()
@@ -121,14 +121,25 @@ class GameTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->player1, $this->game->getCurrentPlayer());
     }
 
-    public function test_should_return_whether_the_game_is_finished()
+    public function test_a_full_line_should_return_consider_the_game_finished()
     {
         $this->assertFalse($this->game->isFinished());
-
         $this->grid
             ->expects($this->once())
             ->method('hasLine')
             ->will($this->returnValue(true));
+
+        $this->assertTrue($this->game->isFinished());
+    }
+
+    public function test_a_full_grid_should_return_consider_the_game_finished()
+    {
+        $this->assertFalse($this->game->isFinished());
+        $this->grid
+            ->expects($this->once())
+            ->method('isFull')
+            ->will($this->returnValue(true));
+
         $this->assertTrue($this->game->isFinished());
     }
 
@@ -157,11 +168,6 @@ class GameTest extends \PHPUnit_Framework_TestCase
     public function test_should_throw_exception_when_the_game_is_not_started()
     {
         $this->game->playTurn($this->cellId);
-    }
-
-    public function test_should_return_a_game_result()
-    {
-        $this->assertInstanceOf(GameResult::CLASS_NAME, $this->game->finish());
     }
 
     /**
@@ -207,6 +213,14 @@ class GameTest extends \PHPUnit_Framework_TestCase
     private function assertGameIsStarted()
     {
         $this->game->start($this->player1);
+    }
+
+    private function assertGameIsFinished()
+    {
+        $this->grid
+            ->expects($this->atLeastOnce())
+            ->method('hasLine')
+            ->will($this->returnValue(true));
     }
 }
  

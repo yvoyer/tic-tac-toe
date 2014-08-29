@@ -16,10 +16,8 @@ use Star\TicTacToe\Grid\Grid;
  *
  * @package Star\TicTacToe
  */
-class GameResult
+class GameResult implements Result
 {
-    const CLASS_NAME = __CLASS__;
-
     /**
      * @var Grid
      */
@@ -36,15 +34,22 @@ class GameResult
     private $player2;
 
     /**
+     * @var Game
+     */
+    private $game;
+
+    /**
      * @param Grid   $grid
      * @param Player $player1
      * @param Player $player2
+     * @param Game   $game
      */
-    public function __construct(Grid $grid, Player $player1, Player $player2)
+    public function __construct(Grid $grid, Player $player1, Player $player2, Game $game)
     {
         $this->grid = $grid;
         $this->player1 = $player1;
         $this->player2 = $player2;
+        $this->game = $game;
     }
 
     /**
@@ -52,7 +57,7 @@ class GameResult
      */
     public function isWin()
     {
-        return (bool) $this->grid->hasLine();
+        return $this->hasWinner() && $this->game->isFinished();
     }
 
     /**
@@ -60,9 +65,14 @@ class GameResult
      */
     public function isDraw()
     {
-        return ! $this->isWin();
+        return ! $this->hasWinner() && $this->game->isFinished();
     }
 
+    /**
+     * @return null|Player
+     *
+     * @throws \RuntimeException
+     */
     public function getWinner()
     {
         $winningToken = $this->grid->getWinningToken();
@@ -70,9 +80,19 @@ class GameResult
             return $this->player1;
         } else if ($this->player2->getToken() == $winningToken) {
             return $this->player2;
+        } else if (false === empty($winningToken)) {
+            throw new \RuntimeException("The token '{$winningToken}' is not owned by any player.");
         }
 
         return null;
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasWinner()
+    {
+        return (bool) $this->getWinner();
     }
 }
  

@@ -12,6 +12,7 @@
         "symfony/console": "~2.0"
     },
     "require-dev": {
+        "phpmd/phpmd" : "2.0.*",
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {

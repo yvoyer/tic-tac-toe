@@ -24,7 +24,7 @@ class ColumnRowGrid implements Grid
     /**
      * @var string
      */
-    private $winningToken;
+    private $winningToken = '';
 
     private $cells = array(
         'a,1' => '',
@@ -107,6 +107,21 @@ class ColumnRowGrid implements Grid
         $aStr = explode(',', $string);
 
         return new ColumnRowId($aStr[0], $aStr[1]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFull()
+    {
+        $emptyCellCount = 0;
+        foreach ($this->cells as $cell) {
+            if (empty($cell)) {
+                $emptyCellCount ++;
+            }
+        }
+
+        return $emptyCellCount == 0;
     }
 
     private function hasDiagonalLine()

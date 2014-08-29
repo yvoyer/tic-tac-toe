@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\StreamOutput;
  */
 class CompleteGameTest extends \PHPUnit_Framework_TestCase
 {
-    public function test_play_a_full_game()
+    public function test_play_a_winning_game()
     {
         $player1 = new Player('X', 'player 1');
         $player2 = new Player('O', 'player 2');
@@ -38,17 +38,57 @@ class CompleteGameTest extends \PHPUnit_Framework_TestCase
         $game->playTurn($grid->createId('b,3'));
         $game->playTurn($grid->createId('c,1'));
         $game->playTurn($grid->createId('c,2'));
+        $game->playTurn($grid->createId('b,2'));
 
         $output = new BufferedOutput();
         $game->render(new ConsoleDisplay($output));
         $expected = <<<Expected
  X | O | X
 -----------
- O |   | O
+ O | X | O
 -----------
  X | O | X
 
 Expected;
-        $this->assertEquals($expected, $output->fetch());
+        $content = $output->fetch();
+        $this->assertEquals($expected, $content);
+
+        $this->assertTrue($game->isFinished(), 'Game should be finished');
+        $this->assertSame('X', $grid->getWinningToken(), 'Player 1 should have won');
+    }
+
+    public function test_play_a_draw_game()
+    {
+        $player1 = new Player('X', 'player 1');
+        $player2 = new Player('O', 'player 2');
+
+        $grid = new ColumnRowGrid();
+        $game = new Game($player1, $player2, $grid);
+        $game->start($player1);
+        $game->playTurn($grid->createId('a,1'));
+        $game->playTurn($grid->createId('b,1'));
+        $game->playTurn($grid->createId('c,1'));
+        $game->playTurn($grid->createId('a,2'));
+        $game->playTurn($grid->createId('c,2'));
+        $game->playTurn($grid->createId('b,2'));
+        $game->playTurn($grid->createId('a,3'));
+        $game->playTurn($grid->createId('c,3'));
+        $game->playTurn($grid->createId('b,3'));
+
+        $output = new BufferedOutput();
+        $game->render(new ConsoleDisplay($output));
+        $expected = <<<Expected
+ X | O | X
+-----------
+ O | O | X
+-----------
+ X | X | O
+
+Expected;
+        $content = $output->fetch();
+        $this->assertEquals($expected, $content);
+
+        $this->assertTrue($game->isFinished(), 'Game should be finished');
+        $this->assertSame('', $grid->getWinningToken(), 'No player should have won');
     }
 }

@@ -51,5 +51,10 @@ interface Grid
      * @return CellId
      */
     public function createId($string);
+
+    /**
+     * @return bool
+     */
+    public function isFull();
 }
  

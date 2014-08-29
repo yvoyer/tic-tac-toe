@@ -66,14 +66,18 @@ class Game
 
     /**
      * @param CellId $cellId
+     *
+     * @return Result
      */
     public function playTurn(CellId $cellId)
     {
         $this->guardAgainstNotStartedGame();
         $this->guardAgainstWrongPlayer($this->currentPlayer);
-        $this->guardAgainstFullGrid();
+        $this->guardAgainstFinishedGrid();
         $this->grid->play($cellId, $this->currentPlayer);
         $this->endTurn();
+
+        return new GameResult($this->grid, $this->player1, $this->player2, $this);
     }
 
     private function endTurn()
@@ -106,15 +110,7 @@ class Game
      */
     public function isFinished()
     {
-        return (bool) $this->grid->hasLine();
-    }
-
-    /**
-     * @return GameResult
-     */
-    public function finish()
-    {
-        return new GameResult($this->grid, $this->player1, $this->player2);
+        return (bool) $this->grid->hasLine() || $this->grid->isFull();
     }
 
     /**
@@ -128,7 +124,7 @@ class Game
         }
     }
 
-    private function guardAgainstFullGrid()
+    private function guardAgainstFinishedGrid()
     {
         if ($this->grid->hasLine()) {
             throw new \RuntimeException('The game is finished since the grid has a line.');
@@ -139,6 +135,13 @@ class Game
     {
         if (false === $this->isStarted()) {
             throw new \RuntimeException('The game is not yet started.');
+        }
+    }
+
+    private function guardAgainstGameNotFinished()
+    {
+        if (false === $this->isFinished()) {
+            throw new \RuntimeException('The game is not yet finished.');
         }
     }
 }

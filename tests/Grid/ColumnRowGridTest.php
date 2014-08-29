@@ -242,6 +242,11 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('W', $this->grid->getWinningToken());
     }
 
+    public function test_should_return_the_default_winning_token()
+    {
+        $this->assertSame('', $this->grid->getWinningToken());
+    }
+
     public function provideWinningCellsPosition()
     {
         return array(
@@ -272,6 +277,34 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
     public function test_should_throw_exception_when_invalid_arguments_given($string)
     {
         $this->grid->createId($string);
+    }
+
+    public function test_should_be_full()
+    {
+        $this->player
+            ->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue('E'));
+
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('a,1'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('a,2'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('a,3'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('b,1'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('b,2'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('b,3'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('c,1'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('c,2'), $this->player);
+        $this->assertFalse($this->grid->isFull());
+        $this->grid->play($this->grid->createId('c,3'), $this->player);
+        $this->assertTrue($this->grid->isFull());
     }
 
     public function provideInvalidId()

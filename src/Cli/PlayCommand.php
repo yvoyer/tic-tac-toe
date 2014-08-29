@@ -10,6 +10,7 @@ namespace Star\TicTacToe\Cli;
 use Star\TicTacToe\Display\ConsoleDisplay;
 use Star\TicTacToe\Grid\ColumnRowGrid;
 use Star\TicTacToe\Game;
+use Star\TicTacToe\NullResult;
 use Star\TicTacToe\Player;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
@@ -58,6 +59,7 @@ class PlayCommand extends Command
         $game = new Game($player1, $player2, $grid);
         $game->start($player1);
 
+        $result = new NullResult();
         while (false === $game->isFinished()) {
             $currentPlayer = $game->getCurrentPlayer();
             $output->writeln("<question>{$currentPlayer->getName()}, c'est votre tour.</question>");
@@ -69,19 +71,18 @@ class PlayCommand extends Command
             );
 
             try {
-                $game->playTurn($id);
+                $result = $game->playTurn($id);
             } catch (\Exception $e) {
                 $output->writeln("<error>{$e->getMessage()}</error>");
             }
         }
 
-        $result = $game->finish();
         if ($result->isWin()) {
             $output->writeln("<info>Game is won by: {$result->getWinner()->getName()}</info>");
         }
 
         if ($result->isDraw()) {
-            $output->writeln('<notice>Game is a tie</notice>');
+            $output->writeln('<info>Game is a tie</info>');
         }
 
         $game->render(new ConsoleDisplay($output));
