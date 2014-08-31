@@ -7,6 +7,7 @@
 
 namespace Star\TicTacToe\Grid;
 
+use Star\TicTacToe\Id\CellId;
 use Star\TicTacToe\Id\ColumnRowId;
 use Star\TicTacToe\Player;
 
@@ -18,7 +19,9 @@ use Star\TicTacToe\Player;
  * @package Star\TicTacToe\Grid
  *
  * @covers Star\TicTacToe\Grid\ColumnRowGrid
+ * @covers Star\TicTacToe\Grid\CellGrid
  * @uses Star\TicTacToe\Id\ColumnRowId
+ * @uses Star\TicTacToe\Grid\CellGrid
  */
 class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
 {
@@ -101,11 +104,13 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideHorizontalData
+     * @dataProvider provideWinningCellsPosition
      *
-     * @param $row
+     * @param \Star\TicTacToe\Id\CellId $cell1
+     * @param \Star\TicTacToe\Id\CellId $cell2
+     * @param \Star\TicTacToe\Id\CellId $cell3
      */
-    public function test_should_have_an_horizontal_line($row)
+    public function test_should_have_a_winning_line(CellId $cell1, CellId $cell2, CellId $cell3)
     {
         $this->player
             ->expects($this->exactly(3))
@@ -113,47 +118,10 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('W'));
 
         $this->assertFalse($this->grid->hasLine());
-        $this->grid->play(new ColumnRowId('a', $row), $this->player);
-        $this->grid->play(new ColumnRowId('b', $row), $this->player);
-        $this->grid->play(new ColumnRowId('c', $row), $this->player);
+        $this->grid->play($cell1, $this->player);
+        $this->grid->play($cell2, $this->player);
+        $this->grid->play($cell3, $this->player);
         $this->assertTrue($this->grid->hasLine());
-    }
-
-    public function provideHorizontalData()
-    {
-        return array(
-            array(1),
-            array(2),
-            array(3),
-        );
-    }
-
-    /**
-     * @dataProvider provideVerticalData
-     *
-     * @param $col
-     */
-    public function test_should_have_a_vertical_line($col)
-    {
-        $this->player
-            ->expects($this->exactly(3))
-            ->method('getToken')
-            ->will($this->returnValue('W'));
-
-        $this->assertFalse($this->grid->hasLine());
-        $this->grid->play(new ColumnRowId($col, 1), $this->player);
-        $this->grid->play(new ColumnRowId($col, 2), $this->player);
-        $this->grid->play(new ColumnRowId($col, 3), $this->player);
-        $this->assertTrue($this->grid->hasLine());
-    }
-
-    public function provideVerticalData()
-    {
-        return array(
-            array('a'),
-            array('b'),
-            array('c'),
-        );
     }
 
     public function test_should_not_have_any_line()
@@ -180,35 +148,6 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
         $this->grid->play(new ColumnRowId('a', 3), $player2);
         $this->grid->play(new ColumnRowId('c', 3), $player2);
         $this->assertFalse($this->grid->hasLine());
-    }
-
-    /**
-     * @dataProvider provideDiagonalData
-     *
-     * @param ColumnRowId $cell1
-     * @param ColumnRowId $cell2
-     * @param ColumnRowId $cell3
-     */
-    public function test_should_have_a_diagonal_line(ColumnRowId $cell1, ColumnRowId $cell2, ColumnRowId $cell3)
-    {
-        $this->player
-            ->expects($this->exactly(3))
-            ->method('getToken')
-            ->will($this->returnValue('W'));
-
-        $this->assertFalse($this->grid->hasLine());
-        $this->grid->play($cell1, $this->player);
-        $this->grid->play($cell2, $this->player);
-        $this->grid->play($cell3, $this->player);
-        $this->assertTrue($this->grid->hasLine());
-    }
-
-    public function provideDiagonalData()
-    {
-        return array(
-            array(new ColumnRowId('a', 1), new ColumnRowId('b', 2), new ColumnRowId('c', 3)),
-            array(new ColumnRowId('a', 3), new ColumnRowId('b', 2), new ColumnRowId('c', 1)),
-        );
     }
 
     /**
@@ -263,7 +202,7 @@ class ColumnRowGridTest extends \PHPUnit_Framework_TestCase
 
     public function test_should_create_the_id()
     {
-        $this->assertInstanceOf(ColumnRowId::CLASS_NAME, $this->grid->createId('a,1'));
+        $this->assertInstanceOf(ColumnRowId::INTERFACE_NAME, $this->grid->createId('a,1'));
     }
 
     /**

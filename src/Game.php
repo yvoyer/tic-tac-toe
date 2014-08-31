@@ -137,12 +137,5 @@ class Game
             throw new \RuntimeException('The game is not yet started.');
         }
     }
-
-    private function guardAgainstGameNotFinished()
-    {
-        if (false === $this->isFinished()) {
-            throw new \RuntimeException('The game is not yet finished.');
-        }
-    }
 }
  

@@ -16,7 +16,7 @@ namespace Star\TicTacToe\Id;
  */
 interface CellId
 {
-    const CLASS_NAME = __CLASS__;
+    const INTERFACE_NAME = __CLASS__;
 
     /**
      * @return string

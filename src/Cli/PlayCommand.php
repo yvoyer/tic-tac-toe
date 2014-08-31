@@ -10,6 +10,7 @@ namespace Star\TicTacToe\Cli;
 use Star\TicTacToe\Display\ConsoleDisplay;
 use Star\TicTacToe\Grid\ColumnRowGrid;
 use Star\TicTacToe\Game;
+use Star\TicTacToe\Grid\NumberGrid;
 use Star\TicTacToe\NullResult;
 use Star\TicTacToe\Player;
 use Symfony\Component\Console\Command\Command;
@@ -55,7 +56,8 @@ class PlayCommand extends Command
         $player2Name = $dialog->ask($output, 'Entrez le nom du joueur 2: ');
         $player2 = new Player('O', $player2Name);
 
-        $grid = new ColumnRowGrid();
+//        $grid = new ColumnRowGrid();
+        $grid = new NumberGrid();
         $game = new Game($player1, $player2, $grid);
         $game->start($player1);
 

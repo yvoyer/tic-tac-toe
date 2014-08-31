@@ -23,10 +23,10 @@ interface Grid
     const CLASS_NAME = __CLASS__;
 
     /**
-     * @param CellId $id
+     * @param CellId $cellId
      * @param Player $player
      */
-    public function play(CellId $id, Player $player);
+    public function play(CellId $cellId, Player $player);
 
     /**
      * @param Display $display

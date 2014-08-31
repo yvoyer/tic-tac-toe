@@ -183,7 +183,7 @@ class GameTest extends \PHPUnit_Framework_TestCase
      */
     private function getMockCellId()
     {
-        return $this->getMock(CellId::CLASS_NAME);
+        return $this->getMock(CellId::INTERFACE_NAME);
     }
 
     /**
