@@ -48,7 +48,7 @@ abstract class CellGrid implements Grid
      */
     public function play(CellId $cellId, Player $player)
     {
-        if (false === empty($this->cells[$this->getCellIndex($cellId)])) {
+        if (false === $this->cellIsEmpty($cellId)) {
             throw new \RuntimeException('The cell already has a token.');
         }
 
@@ -101,8 +101,8 @@ abstract class CellGrid implements Grid
     public function isFull()
     {
         $emptyCellCount = 0;
-        foreach ($this->cells as $cell) {
-            if (empty($cell)) {
+        foreach ($this->cells as $id => $cell) {
+            if ($this->cellIsEmpty($this->createId($id))) {
                 $emptyCellCount ++;
             }
         }
@@ -156,6 +156,20 @@ abstract class CellGrid implements Grid
     protected abstract function getSouthEastCellId();
 
     /**
+     * @param CellId $cellId
+     *
+     * @return bool
+     */
+    private function cellIsEmpty(CellId $cellId)
+    {
+        if (empty($this->cells[$this->getCellIndex($cellId)])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param CellId $cell1
      * @param CellId $cell2
      * @param CellId $cell3
@@ -168,7 +182,7 @@ abstract class CellGrid implements Grid
         $cell2Content = $this->get($cell2);
         $cell3Content = $this->get($cell3);
 
-        if (false === empty($cell1Content) && false === empty($cell2Content) && false === empty($cell3Content)) {
+        if (false === $this->cellIsEmpty($cell1) && false === $this->cellIsEmpty($cell2) && false === $this->cellIsEmpty($cell3)) {
             if ($cell1Content == $cell2Content && $cell2Content == $cell3Content) {
                 return true;
             }
