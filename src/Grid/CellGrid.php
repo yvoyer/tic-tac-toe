@@ -248,7 +248,7 @@ abstract class CellGrid implements Grid
      *
      * @return mixed
      */
-    private function get(CellId $cellId)
+    protected function get(CellId $cellId)
     {
         return $this->cells[$this->getCellIndex($cellId)];
     }

@@ -51,43 +51,45 @@ class PlayCommand extends Command
         $dialog = $this->getHelper('dialog');
 
         $player1Name = $dialog->ask($output, 'Entrez le nom du joueur 1: ');
-        $player1 = new Player('X', $player1Name);
+        $player1 = new Player('<comment>X</comment>', '<comment>' . $player1Name . '</comment>');
 
         $player2Name = $dialog->ask($output, 'Entrez le nom du joueur 2: ');
-        $player2 = new Player('O', $player2Name);
+        $player2 = new Player('<info>O</info>', '<info>' . $player2Name . '</info>');
 
 //        $grid = new ColumnRowGrid();
-        $grid = new NumberGrid();
-        $game = new Game($player1, $player2, $grid);
-        $game->start($player1);
+        while (true) {
+            $grid = new NumberGrid();
+            $game = new Game($player1, $player2, $grid);
+            $game->start($player1);
 
-        $result = new NullResult();
-        while (false === $game->isFinished()) {
-            $currentPlayer = $game->getCurrentPlayer();
-            $output->writeln("<question>{$currentPlayer->getName()}, c'est votre tour.</question>");
-            $game->render(new ConsoleDisplay($output));
+            $result = new NullResult();
+            while (false === $game->isFinished()) {
+                $currentPlayer = $game->getCurrentPlayer();
+                $output->writeln("{$currentPlayer->getName()}<question>, c'est votre tour.</question>");
+                $game->render(new ConsoleDisplay($output));
 
-            $id = $dialog->askAndValidate($output, 'Position: ', function($string) use ($grid) {
-                    return $grid->createId($string);
+                $id = $dialog->askAndValidate($output, 'Position: ', function($string) use ($grid) {
+                        return $grid->createId($string);
+                    }
+                );
+
+                try {
+                    $result = $game->playTurn($id);
+                } catch (\Exception $e) {
+                    $output->writeln("<error>{$e->getMessage()}</error>");
                 }
-            );
-
-            try {
-                $result = $game->playTurn($id);
-            } catch (\Exception $e) {
-                $output->writeln("<error>{$e->getMessage()}</error>");
             }
-        }
 
-        if ($result->isWin()) {
-            $output->writeln("<info>Game is won by: {$result->getWinner()->getName()}</info>");
-        }
+            if ($result->isWin()) {
+                $output->writeln("<info>Game is won by:</info> {$result->getWinner()->getName()}");
+            }
 
-        if ($result->isDraw()) {
-            $output->writeln('<info>Game is a tie</info>');
-        }
+            if ($result->isDraw()) {
+                $output->writeln('<info>Game is a tie</info>');
+            }
 
-        $game->render(new ConsoleDisplay($output));
+            $game->render(new ConsoleDisplay($output));
+        }
     }
 }
  

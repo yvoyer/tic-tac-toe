@@ -13,9 +13,13 @@ namespace Star\TicTacToe\Display;
  * @author  Yannick Voyer (http://github.com/yvoyer)
  *
  * @package Star\TicTacToe\Display
+ * todo rename Renderer
  */
 interface Display
 {
+    const INTERFACE_NAME = __CLASS__;
+
+    // todo move set/get to Data object
     public function setNorthWestCell($token);
     public function setWestCell($token);
     public function setSouthWestCell($token);

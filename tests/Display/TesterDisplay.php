@@ -80,7 +80,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getCenter()
+    public function getCenterCell()
     {
         return $this->center;
     }
@@ -90,7 +90,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getEast()
+    public function getEastCell()
     {
         return $this->east;
     }
@@ -100,7 +100,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getNorthEast()
+    public function getNorthEastCell()
     {
         return $this->northEast;
     }
@@ -110,7 +110,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getNorth()
+    public function getNorthCell()
     {
         return $this->north;
     }
@@ -120,7 +120,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getNorthWest()
+    public function getNorthWestCell()
     {
         return $this->northWest;
     }
@@ -130,7 +130,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getSouth()
+    public function getSouthCell()
     {
         return $this->south;
     }
@@ -140,7 +140,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getSouthEast()
+    public function getSouthEastCell()
     {
         return $this->southEast;
     }
@@ -150,7 +150,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getWest()
+    public function getWestCell()
     {
         return $this->west;
     }
@@ -160,7 +160,7 @@ class TesterDisplay implements Display
      *
      * @return mixed
      */
-    public function getSouthWest()
+    public function getSouthWestCell()
     {
         return $this->southWest;
     }
