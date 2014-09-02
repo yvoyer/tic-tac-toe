@@ -115,5 +115,22 @@ class NumberGrid extends CellGrid
     {
         return new NumberId($string);
     }
+
+    /**
+     * Returns the content of the cell
+     *
+     * @param CellId $cellId
+     *
+     * @return mixed
+     */
+    protected function get(CellId $cellId)
+    {
+        $content = parent::get($cellId);
+        if (empty($content)) {
+            $content = $cellId->getValue();
+        }
+
+        return $content;
+    }
 }
  

@@ -117,7 +117,7 @@ class NumberGridTest extends \PHPUnit_Framework_TestCase
         $tester = new TesterDisplay();
         $this->grid->render($tester);
 
-        $getter = 'get' . ucfirst($method);
+        $getter = 'get' . ucfirst($method) . 'Cell';
         $this->assertSame('W', $tester->{$getter}());
     }
 

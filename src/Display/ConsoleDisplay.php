@@ -50,6 +50,11 @@ class ConsoleDisplay implements Display
         $this->rows[$row][$col] = $token;
     }
 
+    private function getCellContent($row, $col)
+    {
+        return $this->rows[$row][$col];
+    }
+
     public function setNorthWestCell($token)
     {
         $this->setCellContent(1, 1, $token);
@@ -97,13 +102,28 @@ class ConsoleDisplay implements Display
 
     public function render()
     {
-        foreach ($this->rows as $lineNumber => $cols) {
-            $row = " %s | %s | %s";
-            $this->output->writeln(sprintf($row, $cols[1], $cols[2], $cols[3]));
-            if ($lineNumber != 3) {
-                $this->output->writeln('-----------');
-            }
-        }
+        $gridString = <<<GRID
+ %s | %s | %s
+-----------
+ %s | %s | %s
+-----------
+ %s | %s | %s
+GRID;
+
+        $this->output->writeln(
+            sprintf(
+                $gridString,
+                $this->getCellContent(1, 1),
+                $this->getCellContent(1, 2),
+                $this->getCellContent(1, 3),
+                $this->getCellContent(2, 1),
+                $this->getCellContent(2, 2),
+                $this->getCellContent(2, 3),
+                $this->getCellContent(3, 1),
+                $this->getCellContent(3, 2),
+                $this->getCellContent(3, 3)
+            )
+        );
     }
 }
  
